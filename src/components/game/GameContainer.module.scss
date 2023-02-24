@@ -1,6 +1,16 @@
 .GameContainer {
+  position: relative;
 }
 
 .resources {
   margin-bottom: 24px;
+}
+
+@media (min-width: 1200px) {
+  .resources {
+    position: absolute;
+    top: 35px;
+    right: 35px;
+    z-index: 1;
+  }
 }

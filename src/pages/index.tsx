@@ -31,7 +31,7 @@ const Home: NextPage = () => {
             <Box>
               <GameContainer />
             </Box>
-            <Box sx={{ flex: "1", overflow: "hidden" }}>
+            <Box sx={{ flex: "1", overflow: "hidden", minHeight: "300px" }}>
               <StatsContainer />
             </Box>
           </div>
