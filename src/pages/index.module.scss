@@ -1,0 +1,19 @@
+.main {
+  height: 100vh;
+  min-height: 100vh;
+  padding-top: 10px;
+  padding-bottom: 20px;
+
+  background: radial-gradient(
+      101.35% 101.35% at 50% 22.11%,
+      #4e2082 0%,
+      #0c0c4c 71.87%
+    ),
+    #131444;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}

@@ -1,0 +1,163 @@
+.Records {
+  position: relative;
+  height: 100%;
+
+  background: rgba(16, 12, 74, 0.2);
+  border-radius: 12px;
+
+  overflow: hidden;
+
+  // Make inset shadow on top
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    border-radius: 12px;
+    box-shadow: inset 0px 4px 63px rgba(255, 255, 255, 0.25);
+
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+
+  background: radial-gradient(
+      101.35% 101.35% at 50% 22.11%,
+      rgba(255, 255, 255, 0.19) 0%,
+      rgba(24, 20, 53, 0.26) 71.87%
+    ),
+    #9747ff;
+  box-shadow: inset 0px 4px 12px #ffffff;
+  border-radius: 12px 12px 0 0;
+}
+
+.myBest {
+  display: inline-block;
+  text-align: center;
+
+  .score {
+    padding-left: 8px;
+    padding-right: 8px;
+
+    font-weight: 900;
+    font-size: 40px;
+    line-height: 36px;
+
+    color: transparent;
+    background: linear-gradient(180deg, #321f62 0%, rgba(50, 31, 98, 0) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke: 8px transparent;
+  }
+
+  .title {
+    margin-top: 4px;
+
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 12px;
+
+    color: #ffffff;
+  }
+}
+
+.position {
+  justify-content: center;
+  text-align: center;
+
+  height: 67px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+
+  color: #fff;
+  background: radial-gradient(
+      101.35% 101.35% at 50% 22.11%,
+      rgba(78, 32, 130, 0.16) 0%,
+      rgba(12, 12, 76, 0.16) 71.87%
+    ),
+    #131444;
+
+  .score {
+    font-weight: 900;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .title {
+    margin-top: 2px;
+
+    font-weight: 400;
+    font-size: 9px;
+    line-height: 9px;
+  }
+}
+
+.leaderboard {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  border-bottom: 1px solid rgba(130, 75, 244, 0.08);
+
+  .name {
+    flex: 1;
+    padding-left: 16px;
+
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 19px;
+
+    color: #fffefe;
+  }
+
+  .cell {
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+
+    .title {
+      font-weight: 400;
+      font-size: 9px;
+      line-height: 9px;
+      opacity: 0.7;
+    }
+
+    .value {
+      font-weight: 800;
+      font-size: 20px;
+      line-height: 20px;
+    }
+  }
+
+  .score {
+    width: 70px;
+    background: #261b50;
+  }
+
+  .rank {
+    width: 50px;
+    background: #120837;
+
+    .title {
+      opacity: 0.4;
+    }
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}

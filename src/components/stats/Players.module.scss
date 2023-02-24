@@ -1,0 +1,52 @@
+.Players {
+  gap: 11px;
+  background: rgba(16, 12, 74, 0.2);
+  border-radius: 12px;
+
+  // Make inset shadow on top
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    border-radius: 12px;
+    box-shadow: inset 3px 4px 63px rgba(255, 255, 255, 0.25);
+
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 16px;
+  gap: 80px;
+
+  background: radial-gradient(
+      101.35% 101.35% at 50% 22.11%,
+      rgba(34, 21, 49, 0.5) 0%,
+      rgba(22, 22, 48, 0.5) 71.87%
+    ),
+    rgba(19, 20, 68, 0.5);
+  border-radius: 12px 12px 0px 0px;
+
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 21px;
+}
+
+.settings {
+  padding-left: 22px;
+  padding-right: 22px;
+}
+
+.content {
+  align-items: flex-start;
+  padding: 0px 16px;
+  gap: 8px;
+}

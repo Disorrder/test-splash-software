@@ -1,3 +1,5 @@
+import path from "path";
+
 // @ts-check
 
 /**
@@ -19,6 +21,10 @@ const config = {
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
+  },
+
+  sassOptions: {
+    includePaths: [path.resolve("src")],
   },
 };
 export default config;
