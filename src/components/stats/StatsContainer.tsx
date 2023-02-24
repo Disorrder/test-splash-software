@@ -6,6 +6,7 @@ import { ModalSx } from "~/utils/Modal.sx";
 import { Tab, Tabs } from "../mui/Tabs";
 import Records from "./Records";
 import Players from "./Players";
+import Chat from "./Chat";
 
 export default function StatsContainer() {
   const [tab, setTab] = useState(0);
@@ -24,6 +25,7 @@ export default function StatsContainer() {
       <Box sx={{ flex: "1", px: "13px", py: "20px", overflow: "hidden" }}>
         {tab === 0 && <Records />}
         {tab === 1 && <Players />}
+        {tab === 2 && <Chat />}
       </Box>
     </Stack>
   );
