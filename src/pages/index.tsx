@@ -27,14 +27,14 @@ const Home: NextPage = () => {
       </Head>
       <main className={styles.main}>
         <Container fixed sx={{ height: "100%" }}>
-          <Stack spacing={3} sx={{ height: "100%" }}>
+          <div className={styles.layout}>
             <Box>
               <GameContainer />
             </Box>
-            <Box sx={{ flex: "1", minHeight: "362px", overflow: "hidden" }}>
+            <Box sx={{ flex: "1", overflow: "hidden" }}>
               <StatsContainer />
             </Box>
-          </Stack>
+          </div>
         </Container>
       </main>
     </>

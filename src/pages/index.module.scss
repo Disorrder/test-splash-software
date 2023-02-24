@@ -13,7 +13,9 @@
 }
 
 .layout {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content 1fr;
   gap: 22px;
+  height: 100%;
 }
