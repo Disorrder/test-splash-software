@@ -8,6 +8,18 @@
   filter: drop-shadow(0px 4px 90px #542899);
   background: linear-gradient(180deg, #3d1b74 0%, #9a78d0 77.08%);
   border-radius: 20px;
+
+  overflow: hidden;
+
+  & :global(canvas) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 18px;
+    background: #000;
+  }
 }
 
 .canvas {
