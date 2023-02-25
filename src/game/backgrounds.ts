@@ -1,10 +1,9 @@
-import { Container, Texture, Resource, Sprite, Assets, Point } from "pixi.js";
+import { Container, Texture, Resource, Sprite, Assets } from "pixi.js";
 
-import { DEPTH, Game, HORIZON_Y } from "./Game";
+import { Game, HORIZON_Y } from "./Game";
 import { PerspectiveLine } from "./PerspectiveLine";
-import { Line } from "./debug";
-import { getRandomElement } from "~/utils";
 import { SpriteObject } from "./SpriteObject";
+import { RailGenerator } from "./RailGenerator";
 
 export class StaticBackground {
   container = new Container();
@@ -50,21 +49,12 @@ export class StaticBackground {
   }
 }
 
-export class LeftBackground {
-  end: Point;
-  rail: PerspectiveLine;
+export class LeftBackground extends RailGenerator {
+  initRail(): void {
+    this.rail = new PerspectiveLine(this.game.fromNdc(-1.1, 1));
+  }
 
-  container = new Container();
-  prefabs: SpriteObject[] = [];
-  objects: SpriteObject[] = [];
-
-  constructor(private game: Game) {
-    this.end = game.fromNdc(-1.1, 1);
-    this.rail = new PerspectiveLine(this.end);
-
-    // debug
-    this.container.addChild(new Line(PerspectiveLine.center, this.end));
-
+  initPrefabs(): void {
     let tex: Texture<Resource>;
     let sprite: Sprite;
     let object: SpriteObject;
@@ -82,51 +72,15 @@ export class LeftBackground {
     sprite.anchor.set(1.5, 0.3);
     object = new SpriteObject(sprite);
     this.prefabs.push(object);
-
-    game.app.stage.addChild(this.container);
-    game.app.ticker.add((dt) => this.update(dt));
-  }
-
-  update(dt: number) {
-    const last = this.objects[this.objects.length - 1];
-    if (!last || last.z < (DEPTH * 2) / 3) {
-      const prefab = getRandomElement(this.prefabs)!;
-      const object = prefab.clone();
-      object.z = DEPTH;
-      this.objects.push(object);
-      this.container.addChild(object);
-    }
-
-    const dz = (this.game.speed * dt) / 1000;
-
-    this.objects.forEach((object) => {
-      object.z -= dz;
-      this.rail.setTransformAt((DEPTH - object.z) / DEPTH, object);
-
-      if (object.z < 0) {
-        object.destroy();
-      }
-    });
-
-    this.objects = this.objects.filter((object) => object.parent);
   }
 }
 
-export class RightBackground {
-  end: Point;
-  rail: PerspectiveLine;
+export class RightBackground extends RailGenerator {
+  initRail(): void {
+    this.rail = new PerspectiveLine(this.game.fromNdc(1.1, 1));
+  }
 
-  container = new Container();
-  prefabs: SpriteObject[] = [];
-  objects: SpriteObject[] = [];
-
-  constructor(private game: Game) {
-    this.end = game.fromNdc(1.1, 1);
-    this.rail = new PerspectiveLine(this.end);
-
-    // debug
-    this.container.addChild(new Line(PerspectiveLine.center, this.end));
-
+  initPrefabs(): void {
     let tex: Texture<Resource>;
     let sprite: Sprite;
     let object: SpriteObject;
@@ -144,32 +98,5 @@ export class RightBackground {
     sprite.anchor.set(-0.5, 0.3);
     object = new SpriteObject(sprite);
     this.prefabs.push(object);
-
-    game.app.stage.addChild(this.container);
-    game.app.ticker.add((dt) => this.update(dt));
-  }
-
-  update(dt: number) {
-    const last = this.objects[this.objects.length - 1];
-    if (!last || last.z < (DEPTH * 2) / 3) {
-      const prefab = getRandomElement(this.prefabs)!;
-      const object = prefab.clone();
-      object.z = DEPTH;
-      this.objects.push(object);
-      this.container.addChild(object);
-    }
-
-    const dz = (this.game.speed * dt) / 1000;
-
-    this.objects.forEach((object) => {
-      object.z -= dz;
-      this.rail.setTransformAt((DEPTH - object.z) / DEPTH, object);
-
-      if (object.z < 0) {
-        object.destroy();
-      }
-    });
-
-    this.objects = this.objects.filter((object) => object.parent);
   }
 }

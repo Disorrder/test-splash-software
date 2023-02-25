@@ -1,5 +1,6 @@
-import { Application, Assets, Point, Sprite } from "pixi.js";
+import { Application, Assets, Point } from "pixi.js";
 import "@pixi/math-extras";
+import { io } from "socket.io-client";
 
 import { PerspectiveLine } from "./PerspectiveLine";
 import {
@@ -7,11 +8,19 @@ import {
   RightBackground,
   StaticBackground,
 } from "./backgrounds";
-import { Cars } from "./Cars";
+import { Enemies } from "./Enemies";
 
 export const DEPTH = 300; // Distance from camera to horizon (units)
 export const PERSP_SCALE = 35 / 675; // Perspective scale. 35 is far road width, 675 is close road width
 export const HORIZON_Y = 0.2; // Horizon position in NDC
+
+const socket = io("wss://wrongway-racer-api.spls.ae/", {
+  reconnectionDelayMax: 10000,
+});
+
+// socket.onAny((n, m) => {
+//   console.log(n, m);
+// });
 
 export class Game {
   private static instance: Game;
@@ -26,10 +35,10 @@ export class Game {
   #ready = false;
 
   camera: Point;
-  carsSystem!: Cars;
+  enemiesSystem!: Enemies;
 
   /** Speed of the car (units per second) */
-  speed = 5 * DEPTH;
+  speed = 1;
 
   private constructor(
     public readonly app = new Application({
@@ -40,6 +49,16 @@ export class Game {
     app.renderer.resize(1600 / dpr, 900 / dpr);
 
     this.camera = this.fromNdc(0, 1);
+
+    const positions = {
+      left: 0,
+      center: 1,
+      right: 2,
+    };
+
+    socket.on("newEnemy", (position: keyof typeof positions) => {
+      this.enemiesSystem.spawn(positions[position]);
+    });
   }
 
   async load() {
@@ -49,7 +68,7 @@ export class Game {
     new StaticBackground(this);
     new LeftBackground(this);
     new RightBackground(this);
-    this.carsSystem = new Cars(this);
+    this.enemiesSystem = new Enemies(this);
     this.#ready = true;
   }
 
