@@ -9,6 +9,7 @@ import {
   StaticBackground,
 } from "./backgrounds";
 import { Enemies } from "./Enemies";
+import { Player } from "./Player";
 
 export const DEPTH = 300; // Distance from camera to horizon (units)
 export const PERSP_SCALE = 35 / 675; // Perspective scale. 35 is far road width, 675 is close road width
@@ -22,6 +23,8 @@ const socket = io("wss://wrongway-racer-api.spls.ae/", {
 //   console.log(n, m);
 // });
 
+export type GameState = "playing" | "gameover";
+
 export class Game {
   private static instance: Game;
   static getInstance() {
@@ -33,9 +36,11 @@ export class Game {
   }
 
   #ready = false;
+  state: GameState | null = null;
 
   camera: Point;
   enemiesSystem!: Enemies;
+  player!: Player;
 
   /** Speed of the car (units per second) */
   speed = 1;
@@ -56,7 +61,10 @@ export class Game {
       right: 2,
     };
 
+    document.addEventListener("keydown", this.handleKeydown.bind(this));
+
     socket.on("newEnemy", (position: keyof typeof positions) => {
+      if (this.state !== "playing") return;
       this.enemiesSystem.spawn(positions[position]);
     });
   }
@@ -69,6 +77,7 @@ export class Game {
     new LeftBackground(this);
     new RightBackground(this);
     this.enemiesSystem = new Enemies(this);
+    this.player = new Player(this);
     this.#ready = true;
   }
 
@@ -102,5 +111,32 @@ export class Game {
   fromNdc(x: number, y: number): Point {
     const { width, height } = this.app.renderer;
     return new Point(((x + 1) * width) / 2, ((y + 1) * height) / 2);
+  }
+
+  handleKeydown(e: KeyboardEvent) {
+    if (e.key === "ArrowLeft") {
+      this.player.moveLeft();
+    } else if (e.key === "ArrowRight") {
+      this.player.moveRight();
+    }
+  }
+
+  gameOver() {
+    this.state = "gameover";
+    this.speed = 0;
+    this.player.explode();
+    console.info("Game Over!");
+
+    setTimeout(() => {
+      this.restart();
+    }, 2000);
+  }
+
+  restart() {
+    this.state = "playing";
+    this.speed = 1;
+    this.player.reset();
+    this.enemiesSystem.reset();
+    console.info("Game Started!");
   }
 }

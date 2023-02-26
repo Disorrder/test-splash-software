@@ -69,6 +69,8 @@ export class Enemies extends RailGenerator {
   moveObjects(dz: number) {
     // filer out destroyed objects
     this.objects = this.objects.filter((object) => {
+      if (!object.parent) return false;
+
       if (object.z < -200) {
         object.destroy();
         this.objectRailMap.delete(object);
@@ -87,5 +89,11 @@ export class Enemies extends RailGenerator {
 
   updateSpawn() {
     /* noop */
+  }
+
+  reset() {
+    this.objects.forEach((object) => object.destroy());
+    this.objects = [];
+    this.objectRailMap.clear();
   }
 }

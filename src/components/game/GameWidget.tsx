@@ -18,7 +18,8 @@ export default function GameWidget() {
       .load()
       .then(() => {
         setLoaded(true);
-        el.current?.appendChild(game.app.view);
+        el.current?.appendChild(game.app.view as HTMLCanvasElement);
+        game.restart();
       })
       .catch((err) => {
         setError(true);
