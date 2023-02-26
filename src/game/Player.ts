@@ -130,7 +130,7 @@ export class Player extends Container {
       const rail = enemiesSystem.objectRailMap.get(enemy);
       if (0 < enemy.z && enemy.z < 50 && rail === this.rail) {
         enemy.destroy();
-        this.game.gameOver();
+        void this.game.gameOver();
       }
     });
   }
