@@ -1,8 +1,9 @@
-import { Container, Point, Sprite, Texture } from "pixi.js";
-import { Group, Tween } from "tweedle.js";
+import { Assets, Container, Point, Rectangle, Sprite, Texture } from "pixi.js";
+import { Easing, Group, Tween } from "tweedle.js";
 import { clamp } from "~/utils";
 
 import { Game } from "./Game";
+import { OMGWhyPixiDoesntHaveThisOutOfTheBox } from "./OMGWhyPixiDoesntHaveThisOutOfTheBox";
 import { TweenState } from "./TweenState";
 
 export class Player extends Container {
@@ -11,6 +12,7 @@ export class Player extends Container {
   rails: Point[] = [];
 
   sprite = new Sprite();
+  explosion!: OMGWhyPixiDoesntHaveThisOutOfTheBox;
 
   moveTime = 200; // how long to make 1 turn
   animations = new TweenState();
@@ -43,10 +45,29 @@ export class Player extends Container {
     this.sprite.anchor.set(0.5, 1.1);
     this.sprite.scale.set(0.3, 0.25);
     this.addChild(this.sprite);
+
+    this.explosion = new OMGWhyPixiDoesntHaveThisOutOfTheBox(
+      Assets.get<Texture>("/assets/game/explosion_spritesheet.avif").clone(),
+      6,
+      5,
+      27
+    );
+    this.explosion.visible = false;
+    this.explosion.anchor.set(0.5, 1);
+    this.explosion.scale.set(0.3);
+    this.explosion.loop = false;
+    this.explosion.animationSpeed = 0.3;
+
+    this.explosion.onComplete = () => {
+      console.log("stop");
+      this.explosion.visible = false;
+    };
+    this.addChild(this.explosion);
   }
 
   reset() {
-    this.alpha = 1;
+    this.sprite.visible = true;
+    this.explosion.visible = false;
     this.moveTo(1);
   }
 
@@ -76,8 +97,15 @@ export class Player extends Container {
 
   explode() {
     this.animations.stop();
-    const anim = new Tween(this).to({ alpha: 0 }, 200);
-    this.animations.play(anim);
+    this.sprite.visible = false;
+    this.explosion.visible = true;
+    this.explosion.gotoAndPlay(0);
+    new Tween(this.explosion.scale)
+      .from({ x: 0.3, y: 0.3 })
+      .to({ x: 0.5, y: 0.5 }, 1000)
+      .easing(Easing.Cubic.Out)
+      .duration(1000)
+      .start();
   }
 
   updateAnimation() {
@@ -97,7 +125,7 @@ export class Player extends Container {
 
     enemiesSystem.objects.forEach((enemy) => {
       const rail = enemiesSystem.objectRailMap.get(enemy);
-      if (enemy.z < 50 && rail === this.rail) {
+      if (0 < enemy.z && enemy.z < 50 && rail === this.rail) {
         enemy.destroy();
         this.game.gameOver();
       }

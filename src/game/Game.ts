@@ -83,7 +83,6 @@ export class Game {
 
   async loadAssets() {
     const urls = [
-      // "/assets/game/explosion_spritesheet.avif",
       "/assets/game/mountain_fade.png",
       "/assets/game/mountain_left.png",
       "/assets/game/mountain_right.png",
@@ -98,6 +97,8 @@ export class Game {
       "/assets/game/cars/enemy_center.png",
       "/assets/game/cars/enemy_left.png",
       "/assets/game/cars/enemy_right.png",
+
+      "/assets/game/explosion_spritesheet.avif",
     ];
 
     return Promise.all(urls.map((url) => Assets.load(url)));
