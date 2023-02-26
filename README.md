@@ -1,28 +1,39 @@
-# Create T3 App
+# Wrong Way Racer Game
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+### A test task from Splash Software
 
-## What's next? How do I make an app with this?
+https://spls.ae/assessment/wrongwayracer
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## What has been done
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+- [x] The game is playable. Use arrows to move the car.
+- [x] The game is connected to socket.io server, enemies are spawned by server.
+- [x] Collision detection is working.
+- [x] The game restarts after 3 seconds after crash (and push messages to chat!)
+- [x] It's possible to change the game speed, but it's hardcoded.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- [x] Main UI elements such as:
+- [x] Working chat, connected to socket
+- [x] Working Players widget, connected to socket
+- [x] Leaderboard widget with predefined data
+- [x] Mobile and desktop layouts
 
-## Learn More
+## What has not been done
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- [ ] Game settings modal window
+- [ ] Player dots menu of Kick / Mute / Report
+- [ ] Exp bar
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+It's not that hard to do, but it takes time. I'm sorry and hope everything that has been done looks good to you and enough to estimate my coding skills.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## Install depenencies
 
-## How do I deploy this?
+```bash
+npm i
+```
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## How to run
+
+```bash
+npm run dev
+```
