@@ -2,31 +2,31 @@ import { useState } from "react";
 import Image from "next/image";
 import { Avatar, Box, IconButton, Stack } from "@mui/material";
 
+import { IUser } from "~/types/user.types";
+import { useChat } from "~/contexts/chat.context";
+
 import styles from "./Players.module.scss";
 import { Button } from "../mui/Button";
 
-interface IPlayer {
-  name: string;
-  avatar: string;
-}
-
 export default function Players() {
-  const players: IPlayer[] = [
-    { name: "Skylar Baptista", avatar: "/assets/avatars/1.png" },
-    { name: "Wilson Rosser", avatar: "/assets/avatars/2.png" },
-    { name: "Leo Aminoff", avatar: "/assets/avatars/3.png" },
-    { name: "Livia Bator", avatar: "/assets/avatars/4.png" },
-    { name: "Ahmad Dias", avatar: "/assets/avatars/5.png" },
-    { name: "Brandon Dokidis", avatar: "/assets/avatars/6.png" },
-  ];
+  const { users } = useChat();
 
-  const [active, setActive] = useState<IPlayer | null>(null);
+  // const users: IUser[] = [
+  //   { name: "Skylar Baptista", avatar: "/assets/avatars/1.png" },
+  //   { name: "Wilson Rosser", avatar: "/assets/avatars/2.png" },
+  //   { name: "Leo Aminoff", avatar: "/assets/avatars/3.png" },
+  //   { name: "Livia Bator", avatar: "/assets/avatars/4.png" },
+  //   { name: "Ahmad Dias", avatar: "/assets/avatars/5.png" },
+  //   { name: "Brandon Dokidis", avatar: "/assets/avatars/6.png" },
+  // ];
 
-  function handleClick(player: IPlayer) {
-    if (active === player) {
+  const [active, setActive] = useState<IUser | null>(null);
+
+  function handleClick(user: IUser) {
+    if (active === user) {
       setActive(null);
     } else {
-      setActive(player);
+      setActive(user);
     }
   }
 
@@ -49,17 +49,17 @@ export default function Players() {
       </div>
 
       <Stack className={styles.content}>
-        {players.map((player) => (
+        {users.map((user) => (
           <Box
             className={[
               styles.player,
-              player.name === active?.name && styles._active,
+              user.name === active?.name && styles._active,
             ].join(" ")}
-            key={player.name}
-            onClick={() => handleClick(player)}
+            key={user.name}
+            onClick={() => handleClick(user)}
           >
-            <Avatar className={styles.avatar} src={player.avatar} />
-            <Box className={styles.name}>{player.name}</Box>
+            <Avatar className={styles.avatar} src={user.avatar} />
+            <Box className={styles.name}>{user.name}</Box>
             <IconButton className={styles.menu}>
               <Image
                 src="/assets/icons/more_horiz.svg"

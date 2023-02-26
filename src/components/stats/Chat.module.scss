@@ -12,6 +12,12 @@
   padding: 16px;
 
   overflow-y: auto;
+
+  &:after {
+    content: "";
+    display: block;
+    height: 16px;
+  }
 }
 
 .message {
@@ -31,7 +37,8 @@
     color: #ff3eec;
   }
 
-  &._gameStart {
+  &._gameStart,
+  &._gameOver {
     font-weight: 700;
     font-size: 16px;
     line-height: 21px;

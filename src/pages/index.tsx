@@ -1,11 +1,14 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { Container, Stack } from "@mui/material";
+import { Container } from "@mui/material";
+import { Box } from "@mui/system";
+
+import { SocketProvider } from "~/contexts/socket.context";
+import { ChatProvider } from "~/contexts/chat.context";
 
 import styles from "./index.module.scss";
 import GameContainer from "~/components/game/GameContainer";
 import StatsContainer from "~/components/stats/StatsContainer";
-import { Box } from "@mui/system";
 
 const Home: NextPage = () => {
   return (
@@ -29,17 +32,22 @@ const Home: NextPage = () => {
           rel="stylesheet"
         />
       </Head>
+
       <main className={styles.main}>
-        <Container fixed sx={{ height: "100%" }}>
-          <div className={styles.layout}>
-            <Box>
-              <GameContainer />
-            </Box>
-            <Box sx={{ flex: "1", overflow: "hidden", minHeight: "300px" }}>
-              <StatsContainer />
-            </Box>
-          </div>
-        </Container>
+        <SocketProvider>
+          <ChatProvider>
+            <Container fixed sx={{ height: "100%" }}>
+              <div className={styles.layout}>
+                <Box>
+                  <GameContainer />
+                </Box>
+                <Box sx={{ flex: "1", overflow: "hidden", minHeight: "300px" }}>
+                  <StatsContainer />
+                </Box>
+              </div>
+            </Container>
+          </ChatProvider>
+        </SocketProvider>
       </main>
     </>
   );

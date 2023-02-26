@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
+import Grid from "@mui/system/Unstable_Grid";
+
+import { ChatProvider } from "~/contexts/chat.context";
 
 import { ModalSx } from "~/utils/Modal.sx";
 import { Tab, Tabs } from "../mui/Tabs";
 import Records from "./Records";
 import Players from "./Players";
 import Chat from "./Chat";
-import Grid from "@mui/system/Unstable_Grid";
 
 export default function StatsContainer() {
   const theme = useTheme();

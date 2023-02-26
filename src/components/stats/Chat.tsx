@@ -1,72 +1,31 @@
 import Image from "next/image";
 import { Box, Stack } from "@mui/material";
 
+import { useChat } from "~/contexts/chat.context";
+
 import styles from "./Chat.module.scss";
 import { Button } from "../mui/Button";
-
-interface IChatMessage {
-  type: "message";
-  name: string;
-  text: string;
-}
-
-interface IChatNotification {
-  type: "notification";
-  notificationType: "join" | "gameStart" | "gameEnd";
-  text: string;
-}
-
-type IMessage = IChatMessage | IChatNotification;
+import { useRef } from "react";
 
 export default function Chat() {
-  const messages: IMessage[] = [
-    {
-      type: "notification",
-      notificationType: "join",
-      text: "Nazanin Has Joind the Game",
-    },
-    {
-      type: "message",
-      name: "Skylar Baptosta",
-      text: "how you doing mate",
-    },
-    {
-      type: "message",
-      name: "Wilson Rosser",
-      text: "Not bad",
-    },
-    {
-      type: "message",
-      name: "Ahmad Dias",
-      text: "did you win last round?",
-    },
-    {
-      type: "message",
-      name: "Skylar Baptosta",
-      text: "yes, headed for 2:30",
-    },
-    {
-      type: "message",
-      name: "Wilson Rosser",
-      text: "wow Cool!",
-    },
-    {
-      type: "message",
-      name: "Ahmad Dias",
-      text: "I'm on 2:00",
-    },
-    {
-      type: "notification",
-      notificationType: "gameStart",
-      text: "The Game Start in 6...",
-    },
-  ];
+  const { messages } = useChat();
+
+  const scrollable = useRef<HTMLDivElement>(null);
+
+  function scrollToBottom() {
+    scrollable.current?.scrollTo({
+      top: scrollable.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }
+
+  scrollToBottom();
 
   return (
     <Stack className={styles.Chat}>
       <Box sx={{ flex: "1", overflow: "hidden" }}>
         <FancyBox>
-          <Box className={styles.chatBox}>
+          <div className={styles.chatBox} ref={scrollable}>
             {messages.map((message, i) => (
               <Box
                 className={[
@@ -77,6 +36,9 @@ export default function Chat() {
                   message.type === "notification" &&
                     message.notificationType === "gameStart" &&
                     styles._gameStart,
+                  message.type === "notification" &&
+                    message.notificationType === "gameOver" &&
+                    styles._gameOver,
                 ].join(" ")}
                 key={i}
               >
@@ -89,7 +51,7 @@ export default function Chat() {
                 <span className={styles.text}>{message.text}</span>
               </Box>
             ))}
-          </Box>
+          </div>
         </FancyBox>
       </Box>
 

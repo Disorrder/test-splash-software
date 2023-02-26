@@ -1,6 +1,7 @@
-import { Application, Assets, Point } from "pixi.js";
+import { Application, Assets, Point, utils } from "pixi.js";
 import "@pixi/math-extras";
-import { io } from "socket.io-client";
+
+import { socket } from "~/contexts/socket.context";
 
 import { PerspectiveLine } from "./PerspectiveLine";
 import {
@@ -15,14 +16,6 @@ export const DEPTH = 300; // Distance from camera to horizon (units)
 export const PERSP_SCALE = 35 / 675; // Perspective scale. 35 is far road width, 675 is close road width
 export const HORIZON_Y = 0.2; // Horizon position in NDC
 
-const socket = io("wss://wrongway-racer-api.spls.ae/", {
-  reconnectionDelayMax: 10000,
-});
-
-socket.onAny((n, m) => {
-  console.log(n, m);
-});
-
 export type GameState = "playing" | "gameover";
 
 export class Game {
@@ -34,6 +27,8 @@ export class Game {
 
     return Game.instance;
   }
+
+  ee = new utils.EventEmitter();
 
   #ready = false;
   state: GameState | null = null;
@@ -122,15 +117,16 @@ export class Game {
     }
   }
 
-  gameOver() {
+  async gameOver() {
     this.state = "gameover";
     this.speed = 0;
-    this.player.explode();
-    console.info("Game Over!");
+    await this.player.explode();
+
+    this.ee.emit("gameover");
 
     setTimeout(() => {
       this.restart();
-    }, 2000);
+    }, 3000);
   }
 
   restart() {

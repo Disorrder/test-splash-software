@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useChat } from "~/contexts/chat.context";
 
 import { Game } from "~/game";
+import { sleep } from "~/utils/async";
 
 import styles from "./GameWidget.module.scss";
 
 export default function GameWidget() {
+  const { notify } = useChat();
+
   const el = useRef<HTMLDivElement>(null);
   const [game, setGame] = useState<Game>();
   const [isLoaded, setLoaded] = useState<boolean>(false);
@@ -25,6 +29,16 @@ export default function GameWidget() {
         setError(true);
         console.error(err);
       });
+
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    game.ee.on("gameover", async () => {
+      notify("gameOver", "Game over!");
+      notify("gameStart", "Game Starts in 3...");
+      await sleep(1000);
+      notify("gameStart", "Game Starts in 2...");
+      await sleep(1000);
+      notify("gameStart", "Game Starts in 1...");
+    });
   }, []);
 
   return (

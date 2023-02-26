@@ -94,18 +94,21 @@ export class Player extends Container {
     this.moveTo(this.rail + 1);
   }
 
-  explode() {
+  async explode() {
     this.animations.stop();
     this.sprite.visible = false;
     this.explosion.visible = true;
     this.explosion.gotoAndPlay(0);
-    new Tween(this.explosion.scale)
+
+    const tween = new Tween(this.explosion.scale)
       .from({ x: 0.3, y: 0.3 })
       .to({ x: 0.5, y: 0.5 }, 1000)
       // eslint-disable-next-line @typescript-eslint/unbound-method
       .easing(Easing.Cubic.Out)
       .duration(1000)
       .start();
+
+    return new Promise((res) => tween.onComplete(res));
   }
 
   updateAnimation() {
