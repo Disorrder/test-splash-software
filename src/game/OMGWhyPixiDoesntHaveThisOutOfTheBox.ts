@@ -7,12 +7,10 @@ export class OMGWhyPixiDoesntHaveThisOutOfTheBox extends AnimatedSprite {
     public rows: number,
     public frames: number
   ) {
-    // super([tex]);
     const width = tex.width / cols;
     const height = tex.height / rows;
     tex.frame = new Rectangle(0, 0, width, height);
     super(Array<Texture>(frames).fill(tex));
-    console.log(this, tex);
   }
 
   update(dt: number) {

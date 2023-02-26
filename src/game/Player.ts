@@ -1,5 +1,5 @@
-import { Assets, Container, Point, Rectangle, Sprite, Texture } from "pixi.js";
-import { Easing, Group, Tween } from "tweedle.js";
+import { Assets, Container, Point, Sprite, Texture } from "pixi.js";
+import { Easing, Tween } from "tweedle.js";
 import { clamp } from "~/utils";
 
 import { Game } from "./Game";
@@ -59,7 +59,6 @@ export class Player extends Container {
     this.explosion.animationSpeed = 0.3;
 
     this.explosion.onComplete = () => {
-      console.log("stop");
       this.explosion.visible = false;
     };
     this.addChild(this.explosion);
@@ -103,6 +102,7 @@ export class Player extends Container {
     new Tween(this.explosion.scale)
       .from({ x: 0.3, y: 0.3 })
       .to({ x: 0.5, y: 0.5 }, 1000)
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       .easing(Easing.Cubic.Out)
       .duration(1000)
       .start();

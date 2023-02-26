@@ -19,9 +19,9 @@ const socket = io("wss://wrongway-racer-api.spls.ae/", {
   reconnectionDelayMax: 10000,
 });
 
-// socket.onAny((n, m) => {
-//   console.log(n, m);
-// });
+socket.onAny((n, m) => {
+  console.log(n, m);
+});
 
 export type GameState = "playing" | "gameover";
 
